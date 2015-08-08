@@ -451,7 +451,10 @@ void KeepassEntryView::OnEditCopyUrl(){
 void KeepassEntryView::OnUsernameToClipboard(){
 	if (selectedItems().size() == 0) return;
 	QString username = ((EntryViewItem*)selectedItems().first())->EntryHandle->username();
-	Clipboard->setText(username,  QClipboard::Clipboard);
+	QMimeData *mime = new QMimeData;
+	mime->setText(username);
+	mime->setData("application/x-nspasteboard-concealed-type", QByteArray());
+	Clipboard->setMimeData(mime,  QClipboard::Clipboard);
 	if(Clipboard->supportsSelection()){
 		Clipboard->setText(username, QClipboard::Selection);
 	}
@@ -467,7 +470,10 @@ void KeepassEntryView::OnPasswordToClipboard(){
 	SecString password;
 	password=((EntryViewItem*)selectedItems().first())->EntryHandle->password();
 	password.unlock();
-	Clipboard->setText(password.string(), QClipboard::Clipboard);
+	QMimeData *mime = new QMimeData;
+	mime->setText(password.string());
+	mime->setData("application/x-nspasteboard-concealed-type", QByteArray());
+	Clipboard->setMimeData(mime, QClipboard::Clipboard);
 	if(Clipboard->supportsSelection()){
 		Clipboard->setText(password.string(), QClipboard::Selection);
 	}

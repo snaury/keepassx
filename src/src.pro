@@ -121,7 +121,7 @@ macx {
 		SOURCES += lib/AutoTypeGlobalMacX.cpp
 		HEADERS += lib/AutoTypeGlobalMacX.h
 	}
-#	SOURCES += main_macx.cpp
+	SOURCES += main_macx.cpp
 }
 
 #-------------------------------------------------------------------------------

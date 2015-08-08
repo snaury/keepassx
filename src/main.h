@@ -25,6 +25,7 @@
 QString findPlugin(const QString& filename);
 void loadImages();
 void initAppPaths(int argc, char **argv);
+void initConcealedMime();
 
 class CmdLineArgs {
 public:

@@ -20,9 +20,58 @@
  ***************************************************************************/
 
 #include <QVarLengthArray>
+#include <QtGui/QMacPasteboardMime>
 #include <Carbon/Carbon.h>
 #include "main.h"
 
+class ConcealedMime : public QMacPasteboardMime
+{
+public:
+    ConcealedMime()
+        : QMacPasteboardMime(MIME_ALL)
+    { }
+
+    QString convertorName()
+    {
+        return QString("ConcealedMime");
+    }
+
+    bool canConvert(const QString &mime, QString flav)
+    {
+        return true;
+    }
+
+    QString mimeFor(QString flav)
+    {
+        if (flav == QString("org.nspasteboard.ConcealedType"))
+            return QString("application/x-nspasteboard-concealed-type");
+        return QString();
+    }
+
+    QString flavorFor(const QString &mime)
+    {
+        if (mime == QString("application/x-nspasteboard-concealed-type"))
+            return QString("org.nspasteboard.ConcealedType");
+        return QString();
+    }
+
+    QVariant convertToMime(const QString &mime, QList<QByteArray> data, QString flav)
+    {
+        return data.first();
+    }
+
+    QList<QByteArray> convertFromMime(const QString &mime, QVariant data, QString flav)
+    {
+        QList<QByteArray> ret;
+        ret.append(data.toByteArray());
+    }
+};
+
+void initConcealedMime() {
+    new ConcealedMime;
+}
+
+#if 0
 void initAppPaths(int argc,char** argv) {
 	CFURLRef bundleURL(CFBundleCopyExecutableURL(CFBundleGetMainBundle()));
 	//assert(bundleURL);
@@ -42,3 +91,4 @@ void initAppPaths(int argc,char** argv) {
 	HomeDir = QDir::homePath()+"/.keepassx";
 	DataDir=AppDir+"/../Resources/keepassx";	
 }
+#endif

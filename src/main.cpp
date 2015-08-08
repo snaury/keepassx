@@ -104,6 +104,8 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
+	initConcealedMime();
+
 	//Load Config
 	QString IniFilename;
 	if(args.configLocation().isEmpty()){
